@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 $mapping = array(
     'Fizzik\Database\MongoDBDatabase' => __DIR__ . '/Fizzik/Database/MongoDBDatabase.php',
     'Fizzik\Database\MySqlDatabase' => __DIR__ . '/Fizzik/Database/MySqlDatabase.php',
