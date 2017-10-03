@@ -2,6 +2,8 @@
 
 namespace Fizzik\Database;
 
+use \mysqli;
+
 /**
  * Database object that handles mysqli connections
  */
