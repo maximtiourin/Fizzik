@@ -2,7 +2,6 @@
 
 namespace Fizzik\Database;
 
-class MongoDBDatabase
-{
+class MongoDBDatabase {
 
 }
