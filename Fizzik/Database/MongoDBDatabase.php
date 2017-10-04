@@ -6,19 +6,23 @@ namespace Fizzik\Database;
  * Database object that handles mongodb connections
  */
 class MongoDBDatabase {
-    private $db = null;
+    private $client = null; //last connected client
+    private $db = null; //last selected database
 
-    public function connect($uri, $database, $urioptions = [], $driveroptions = []) {
+    public function connect($uri, $urioptions = [], $driveroptions = []) {
         try {
-            $client = new \MongoDB\Client($uri, $urioptions, $driveroptions);
+            $this->client = new \MongoDB\Client($uri, $urioptions, $driveroptions);
 
-            $this->db = $client . selectDatabase($database);
-
-            return $this->db;
+            return $this->client;
         }
         catch (\Exception $e) {
             die("Could not connect: " . $e->getMessage());
         }
+    }
+
+    public function selectDatabase($database, $options = []) {
+        $this->db = $this->client->selectDatabase($database, $options);
+        return $this->db;
     }
 
     public function selectCollection($collection, $options = []) {
@@ -35,5 +39,6 @@ class MongoDBDatabase {
 
     public function close() {
         $this->db = null;
+        $this->client = null;
     }
 }
