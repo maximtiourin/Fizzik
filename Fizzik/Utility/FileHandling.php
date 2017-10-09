@@ -25,7 +25,10 @@ class FileHandling {
         array_map("unlink", glob($pattern));
     }
 
-    public static function deleteDirectoryAndContents($path) {
+    /*
+     * Will iteratively delete a file or directory and its contents at the resolved path
+     */
+    public static function deleteFileOrDirectoryAndItsContents($path) {
         if (is_dir($path) === true) {
             $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::CHILD_FIRST);
             foreach ($files as $file) {
@@ -44,6 +47,37 @@ class FileHandling {
             return unlink($path);
         }
         return false;
+    }
+
+    /*
+     * Will recursively delete a directory and its contents at the resolved path
+     */
+    public static function deleteDirectoryAndItsContents($dir) {
+        foreach (glob("{$dir}/*") as $file) {
+            if(is_dir($file)) {
+                self::deleteDirectoryAndItsContents($file);
+            }
+            else {
+                unlink($file);
+            }
+        }
+        rmdir($dir);
+    }
+
+    /*
+     * Will recursively delete directory's contents at the resolved path, but not the directory itself
+     * unless $deletedir = TRUE for the initial call.
+     */
+    public static function deleteDirectoryContents($dir, $deletedir = FALSE) {
+        foreach (glob("{$dir}/*") as $file) {
+            if(is_dir($file)) {
+                self::deleteDirectoryContents($file, TRUE);
+            }
+            else {
+                unlink($file);
+            }
+        }
+        if ($deletedir) rmdir($dir);
     }
 
     /*
