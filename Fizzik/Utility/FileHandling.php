@@ -15,7 +15,7 @@ class FileHandling {
     }
 
     public static function ensureDirectoryPermissionsRecursively($file, $chmod = 0777) {
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($file));
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($file));
         foreach($iterator as $item) {
             chmod($item, $chmod);
         }
@@ -27,7 +27,7 @@ class FileHandling {
 
     public static function deleteDirectoryAndContents($path) {
         if (is_dir($path) === true) {
-            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::CHILD_FIRST);
+            $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::CHILD_FIRST);
             foreach ($files as $file) {
                 if (in_array($file->getBasename(), array('.', '..')) !== true) {
                     if ($file->isDir() === true) {
@@ -55,7 +55,7 @@ class FileHandling {
     public static function ensureDirectory($path, $chmod = 0777) {
         if (!file_exists($path) || !is_dir($path)) {
             mkdir($path, $chmod, true);
-            self::ensurePermissions($path, $chmod);
+            self::ensureDirectoryPermissionsRecursively($path, $chmod);
         }
     }
 
