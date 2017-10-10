@@ -53,25 +53,20 @@ class FileHandling {
      * Will recursively delete a directory and its contents at the resolved path
      */
     public static function deleteDirectoryAndItsContents($dir) {
-        foreach (glob("{$dir}/*") as $file) {
-            if(is_dir($file)) {
-                self::deleteDirectoryAndItsContents($file);
-            }
-            else {
-                unlink($file);
-            }
-        }
-        rmdir($dir);
+        self::deleteDirectoryAndItsContentsInternal($dir, TRUE);
     }
 
     /*
      * Will recursively delete directory's contents at the resolved path, but not the directory itself
-     * unless $deletedir = TRUE for the initial call.
      */
-    public static function deleteDirectoryContents($dir, $deletedir = FALSE) {
+    public static function deleteDirectoryContents($dir) {
+        self::deleteDirectoryAndItsContentsInternal($dir, FALSE);
+    }
+
+    private static function deleteDirectoryAndItsContentsInternal($dir, $deletedir = FALSE) {
         foreach (glob("{$dir}/*") as $file) {
             if(is_dir($file)) {
-                self::deleteDirectoryContents($file, TRUE);
+                self::deleteDirectoryAndItsContentsInternal($file, TRUE);
             }
             else {
                 unlink($file);
