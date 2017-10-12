@@ -38,6 +38,8 @@ class MySqlDatabase {
             $this->pstate[$name] = $e;
             return $e;
         }
+
+        return false;
     }
 
     /*
@@ -89,6 +91,10 @@ class MySqlDatabase {
 
     public function freeResult($result) {
         $result->free();
+    }
+
+    public function setEncoding($encodingstr) {
+        $this->db->set_charset($encodingstr);
     }
 
     /*
