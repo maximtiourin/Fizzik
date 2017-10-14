@@ -14,6 +14,8 @@ class MySqlDatabase {
     private $pstate = []; //Map of : names => prepared statements
 
     public function connect($host, $user, $password, $dbname, $port = self::DEFAULT_PORT) {
+        if ($port === NULL) $port = self::DEFAULT_PORT;
+
         if ($this->db != null) {
             $this->close();
         }
