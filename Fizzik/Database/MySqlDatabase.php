@@ -8,15 +8,17 @@ use \mysqli;
  * Database object that handles mysqli connections
  */
 class MySqlDatabase {
+    const DEFAULT_PORT = 3306;
+
     private $db = null;
     private $pstate = []; //Map of : names => prepared statements
 
-    public function connect($host, $user, $password, $dbname) {
+    public function connect($host, $user, $password, $dbname, $port = self::DEFAULT_PORT) {
         if ($this->db != null) {
             $this->close();
         }
 
-        $this->db = new mysqli($host, $user, $password, $dbname);
+        $this->db = new mysqli($host, $user, $password, $dbname, $port);
         if (mysqli_connect_errno()) {
             die('Could not connect: ' . mysqli_connect_error());
         }
