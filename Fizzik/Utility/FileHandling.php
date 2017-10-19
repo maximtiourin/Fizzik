@@ -76,6 +76,16 @@ class FileHandling {
     }
 
     /*
+     * Creates a copy of the file at originalpath, with the copy located at newpath
+     * Uses cp
+     */
+    public static function copyFile($originalpath, $newpath) {
+        $path1 = escapeshellarg($originalpath);
+        $path2 = escapeshellarg($newpath);
+        shell_exec("cp $path1 $path2");
+    }
+
+    /*
      * Ensures the existence of the directory, by creating it if it doesn't exist
      * at the given path, and/or isn't a valid directory
      *

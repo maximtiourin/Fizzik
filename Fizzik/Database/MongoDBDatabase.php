@@ -6,7 +6,9 @@ namespace Fizzik\Database;
  * Database object that handles mongodb connections
  */
 class MongoDBDatabase {
+    /** @var \MongoDB\Client $client */
     private $client = null; //last connected client
+    /** @var \MongoDB\Database $db */
     private $db = null; //last selected database
 
     public function connect($uri, $urioptions = [], $driveroptions = []) {
