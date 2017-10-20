@@ -8,6 +8,7 @@ $mapping = array(
     'Fizzik\Database\RedisDatabase' => __DIR__ . '/Fizzik/Database/RedisDatabase.php',
     'Fizzik\Utility\Console' => __DIR__ . '/Fizzik/Utility/Console.php',
     'Fizzik\Utility\FileHandling' => __DIR__ . '/Fizzik/Utility/FileHandling.php',
+    'Fizzik\Utility\OS' => __DIR__ . '/Fizzik/Utility/OS.php',
     'Fizzik\Utility\SleepHandler' => __DIR__ . '/Fizzik/Utility/SleepHandler.php',
 );
 
