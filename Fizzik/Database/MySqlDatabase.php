@@ -10,6 +10,7 @@ use \mysqli;
 class MySqlDatabase {
     const DEFAULT_PORT = 3306;
 
+    /** @var \mysqli $db */
     private $db = null;
     private $pstate = []; //Map of : names => prepared statements
 
@@ -84,21 +85,42 @@ class MySqlDatabase {
     public function query($query) {
         $result = $this->db->query($query);
         if (!$result) {
-            die('Query failed: ' . $this->db->error());
+            die('Query failed: ' . $this->db->error);
         }
         return $result;
     }
 
-    public function fetchArray($result) {
+    public function fetchArray(\mysqli_result $result) {
         return $result->fetch_assoc();
     }
 
-    public function freeResult($result) {
+    public function freeResult(\mysqli_result $result) {
         $result->free();
     }
 
     public function setEncoding($encodingstr) {
         $this->db->set_charset($encodingstr);
+    }
+
+    /*
+     * Begins a transaction
+     */
+    public function transaction_begin() {
+        $this->db->begin_transaction();
+    }
+
+    /*
+     * Commits a transaction
+     */
+    public function transaction_commit() {
+        $this->db->commit();
+    }
+
+    /*
+     * Rolls back a transaction
+     */
+    public function transaction_rollback() {
+        $this->db->rollback();
     }
 
     /*
