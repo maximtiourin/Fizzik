@@ -63,9 +63,11 @@ class MySqlDatabase {
         return false;
     }
 
-    /*
+    /**
      * Executes the prepared query with the given variable name,
      * returns a result set if the query creates one, or false otherwise;
+     * @param $name string name of the prepared query
+     * @return \mysqli_result|bool
      */
     public function execute($name) {
         if ($this->db != null) {
@@ -80,6 +82,23 @@ class MySqlDatabase {
         }
 
         return false;
+    }
+
+    /**
+     * Returns the number of affected rows for the given prepared query
+     * if it has been executed and it is UPDATE, INSERT, DELETE
+     * @param $name string name of the prepared query
+     * @return int|NULL
+     */
+    public function affectedRows($name) {
+        if ($this->db != null) {
+            $e = $this->pstate[$name];
+            if ($e != null) {
+                return $e->affected_rows();
+            }
+        }
+
+        return NULL;
     }
 
     public function query($query) {
