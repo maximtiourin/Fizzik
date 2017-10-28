@@ -57,6 +57,30 @@ class RedisDatabase {
     }
 
     /*
+     * Caches the value at the specified key and field, with the optional time-to-live in seconds
+     * Returns a redis response int
+     */
+    public function cacheHash($key, $field, $value, $seconds = NULL) {
+        if (is_int($seconds)) {
+            $ret = $this->client->hset($key, $field, $value);
+            $this->client->expire($key, $seconds);
+            return $ret;
+        }
+        else {
+            $ret = $this->client->hset($key, $field, $value);
+            $this->client->persist($key);
+            return $ret;
+        }
+    }
+
+    /*
+     * Returns the value of the field of the given key, or null if the key or field doesn't exist
+     */
+    public function getCachedHash($key, $field) {
+        return $this->client->hget($key, $field);
+    }
+
+    /*
      * Sets the time-to-live in seconds for a given key. If seconds isn't specified, isn't an integer, or is <= 0, then the key is instead deleted.
      * If seconds is set, returns integer 1 if the time-to-live was set, or 0 if the key doesnt exist
      * If seconds isn't set or is <= 0, returns integer 1 if key was removed, 0 if the key doesnt exist
