@@ -11,6 +11,13 @@ class MongoDBDatabase {
     /** @var \MongoDB\Database $db */
     private $db = null; //last selected database
 
+    /**
+     * Attempts to connect to the MongoDB database, returning a MongoDB Client on success, FALSE on failure.
+     * @param $uri
+     * @param array $urioptions
+     * @param array $driveroptions
+     * @return bool|\MongoDB\Client
+     */
     public function connect($uri, $urioptions = [], $driveroptions = []) {
         try {
             $this->client = new \MongoDB\Client($uri, $urioptions, $driveroptions);
@@ -18,7 +25,7 @@ class MongoDBDatabase {
             return $this->client;
         }
         catch (\Exception $e) {
-            die("Could not connect: " . $e->getMessage());
+            return FALSE;
         }
     }
 

@@ -10,14 +10,25 @@ class RedisDatabase {
     /** @var \Predis\Client $client */
     private $client = null; //last connected client
 
-    public function connect($uri, $clientOptions = []) {
+    /**
+     * Attempts to connect to the redis server, returning a Predis client on success, FALSE on failure.
+     * @param $uri
+     * @param null $database
+     * @param array $clientOptions
+     * @return bool|\Predis\Client
+     */
+    public function connect($uri, $database = NULL, $clientOptions = []) {
         try {
             $this->client = new \Predis\Client($uri, $clientOptions);
+
+            if ($database !== NULL && is_int($database)) {
+                $this->selectDatabase($database);
+            }
 
             return $this->client;
         }
         catch (\Exception $e) {
-            die("Could not connect: " . $e->getMessage());
+            return FALSE;
         }
     }
 
@@ -68,7 +79,9 @@ class RedisDatabase {
     }
 
     public function close() {
-        $this->client->disconnect();
-        $this->client = null;
+        if ($this->client !== NULL) {
+            $this->client->disconnect();
+            $this->client = null;
+        }
     }
 }

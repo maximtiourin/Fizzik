@@ -14,6 +14,15 @@ class MySqlDatabase {
     private $db = null;
     private $pstate = []; //Map of : names => prepared statements
 
+    /**
+     * Attempts to connect to the mysql database, returning the connection on success, FALSE on failure
+     * @param $host
+     * @param $user
+     * @param $password
+     * @param $dbname
+     * @param int $port
+     * @return bool|mysqli
+     */
     public function connect($host, $user, $password, $dbname, $port = self::DEFAULT_PORT) {
         if ($port === NULL) $port = self::DEFAULT_PORT;
 
@@ -23,7 +32,7 @@ class MySqlDatabase {
 
         $this->db = new mysqli($host, $user, $password, $dbname, $port);
         if (mysqli_connect_errno()) {
-            die('Could not connect: ' . mysqli_connect_error());
+            return FALSE;
         }
 
         return $this->db;
