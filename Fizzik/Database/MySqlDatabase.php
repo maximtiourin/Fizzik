@@ -126,9 +126,6 @@ class MySqlDatabase {
         if ($result !== NULL && $result !== FALSE) {
             $result->free();
         }
-        else {
-            throw new \Exception("Can't free empty result.");
-        }
     }
 
     /*
@@ -184,14 +181,14 @@ class MySqlDatabase {
     }
 
     /*
-     * Counts the amount of rows returned in the result
+     * Counts the amount of rows returned in the result, returns 0 if result is invalid
      */
     public function countResultRows($result) {
         if ($result !== NULL && $result !== FALSE) {
             return $result->num_rows;
         }
         else {
-            throw new \Exception("Can't count Result Rows of empty result.");
+            return 0;
         }
     }
 
