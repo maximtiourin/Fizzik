@@ -144,7 +144,7 @@ class MySqlDatabase {
 
                 if ($val === 1) return TRUE;
                 else if ($val === 0) return FALSE;
-                else echo 'Non numeric GetLock'.PHP_EOL;
+                else echo 'Non numeric GetLock: ('.$val.')'.PHP_EOL;
             }
         }
         else {
