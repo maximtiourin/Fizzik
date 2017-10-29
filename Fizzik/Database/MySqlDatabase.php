@@ -118,12 +118,14 @@ class MySqlDatabase {
         return $result;
     }
 
-    public function fetchArray(\mysqli_result $result) {
+    public function fetchArray($result) {
+      if ($result !== NULL && $result !== FALSE && $result instanceof \mysqli_result) {
         return $result->fetch_assoc();
+      }
     }
 
-    public function freeResult(\mysqli_result $result) {
-        if ($result !== NULL && $result !== FALSE) {
+    public function freeResult($result) {
+        if ($result !== NULL && $result !== FALSE && $result instanceof \mysqli_result) {
             $result->free();
         }
     }
@@ -184,7 +186,7 @@ class MySqlDatabase {
      * Counts the amount of rows returned in the result, returns 0 if result is invalid
      */
     public function countResultRows($result) {
-        if ($result !== NULL && $result !== FALSE) {
+        if ($result !== NULL && $result !== FALSE && $result instanceof \mysqli_result) {
             return $result->num_rows;
         }
         else {
