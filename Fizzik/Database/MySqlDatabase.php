@@ -123,7 +123,12 @@ class MySqlDatabase {
     }
 
     public function freeResult(\mysqli_result $result) {
-        $result->free();
+        if ($result !== NULL && $result !== FALSE) {
+            $result->free();
+        }
+        else {
+            throw new \Exception("Can't free empty result.");
+        }
     }
 
     public function setEncoding($encodingstr) {
@@ -155,7 +160,12 @@ class MySqlDatabase {
      * Counts the amount of rows returned in the result
      */
     public function countResultRows($result) {
-        return $result->num_rows;
+        if ($result !== NULL && $result !== FALSE) {
+            return $result->num_rows;
+        }
+        else {
+            throw new \Exception("Can't count Result Rows of empty result.");
+        }
     }
 
     public function isConnected() {
