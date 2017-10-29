@@ -133,10 +133,21 @@ class MySqlDatabase {
 
     /*
      * Attempts to get a lock with the given name for the current session, using timeout of seconds.
-     * Negative timeout means infinite. Returns true on successful lock, false if timed out (will timeout if lock already in use by other clint)
+     * Negative timeout means infinite. Returns true on successful lock, false if timed out or error (will timeout if lock already in use by other clint)
      */
     public function lock($lockName, $timeout) {
-        return $this->db->query("SELECT GET_LOCK('$lockName', $timeout)");
+        $res = $this->db->query("SELECT GET_LOCK('$lockName', $timeout) AS GetLock");
+        if ($res !== NULL) {
+            $row = $res->fetch_assoc();
+            if (key_exists("GetLock", $row)) {
+                $val = $row['GetLock'];
+
+                if ($val === 1) return TRUE;
+                else if ($val === 0) return FALSE;
+            }
+        }
+
+        return FALSE;
     }
 
     /*
