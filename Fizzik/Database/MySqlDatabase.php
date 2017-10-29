@@ -131,6 +131,22 @@ class MySqlDatabase {
         }
     }
 
+    /*
+     * Attempts to get a lock with the given name for the current session, using timeout of seconds.
+     * Negative timeout means infinite. Returns true on successful lock, false if timed out (will timeout if lock already in use by other clint)
+     */
+    public function lock($lockName, $timeout) {
+        return $this->db->query("SELECT GET_LOCK('$lockName', $timeout)");
+    }
+
+    /*
+     * Releases the lock with the given name for the current session.
+     * Returns true on successful release, false if not release (if this session did not initiate the lock), or on failure
+     */
+    public function unlock($lockName) {
+        return $this->db->query("SELECT RELEASE_LOCK('$lockName')");
+    }
+
     public function setEncoding($encodingstr) {
         $this->db->set_charset($encodingstr);
     }
