@@ -140,7 +140,7 @@ class MySqlDatabase {
         if ($res !== NULL) {
             $row = $res->fetch_assoc();
             if (key_exists("GetLock", $row)) {
-                $val = $row['GetLock'];
+                $val = intval($row['GetLock']);
 
                 if ($val === 1) return TRUE;
                 else if ($val === 0) return FALSE;
