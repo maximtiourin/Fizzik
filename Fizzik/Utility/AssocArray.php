@@ -28,21 +28,22 @@ class AssocArray {
     /**
      * Given two associative arrays, lhs and rhs, will create a composite array containing a set of all key chains found
      * within both arrays, where any duplicate keys with numeric values had their values aggregated based on the aggregation type.
+     * Passed lhs or rhs array can be null to perform one sided aggregation into result.
      * Default aggregation type is AGGREGATE_SUM
      * @param $lhs
      * @param $rhs
      * @param int $aggregationType
      */
-    public static function aggregate(&$resultArray, &$lhs, &$rhs, $aggregationType = self::AGGREGATE_SUM) {
+    public static function aggregate(&$resultArray, $lhs, $rhs, $aggregationType = self::AGGREGATE_SUM) {
         switch ($aggregationType) {
             case self::AGGREGATE_SUM:
-                self::aggregate_sum($resultArray, $lhs);
-                self::aggregate_sum($resultArray, $rhs);
+                if ($lhs !== null) self::aggregate_sum($resultArray, $lhs);
+                if ($rhs !== null) self::aggregate_sum($resultArray, $rhs);
                 break;
         }
     }
 
-    private static function aggregate_sum(&$resultArray, &$src) {
+    private static function aggregate_sum(&$resultArray, $src) {
         foreach ($src as $key => &$val) {
             if (key_exists($key, $resultArray)) {
                 $rval = &$resultArray[$key];
