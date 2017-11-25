@@ -38,6 +38,40 @@ class MySqlDatabase {
         return $this->db;
     }
 
+    /**
+     * Attempts to connect to the mysql database using ssl, returning the connection on success, FALSE on failure
+     * @param $host
+     * @param $user
+     * @param $password
+     * @param $dbname
+     * @param int $port
+     * @return bool|mysqli
+     */
+    public function ssl_connect($host, $user, $password, $dbname, $client_key, $client_cert, $ca_cert, $verify_server_cert = TRUE, $port = self::DEFAULT_PORT) {
+        if ($port === NULL) $port = self::DEFAULT_PORT;
+
+        if ($this->db != null) {
+            $this->close();
+        }
+
+        $connection = mysqli_init();
+        $connection->ssl_set($client_key, $client_cert, $ca_cert, NULL,NULL);
+
+        $flag = MYSQLI_CLIENT_SSL;
+        if (!$verify_server_cert) {
+            $flag = MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT;
+        }
+
+        $success = mysqli_real_connect($connection, $host, $user, $password, $dbname, $port, NULL, $flag);
+        if (!$success) {
+            return FALSE;
+        }
+
+        $this->db = $connection;
+
+        return $this->db;
+    }
+
     /*
      * Prepares a query statement with the given name,
      * for the current connection, if there is one.
