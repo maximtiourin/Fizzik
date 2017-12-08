@@ -128,6 +128,20 @@ class MySqlDatabase {
     }
 
     /**
+     * Returns the prepared statement of given name if it exists, otherwise returns false.
+     */
+    public function getStatement($name) {
+        if ($this->db != null) {
+            $e = $this->pstate[$name];
+            if ($e != null) {
+                return $e;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Returns the number of affected rows for the given prepared query
      * if it has been executed and it is UPDATE, INSERT, DELETE
      * @param $name string name of the prepared query
