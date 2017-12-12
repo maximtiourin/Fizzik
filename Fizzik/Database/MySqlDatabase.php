@@ -158,12 +158,11 @@ class MySqlDatabase {
         return NULL;
     }
 
+    /*
+     * Returns false on failure, mysqli_result or TRUE on success based on query.
+     */
     public function query($query) {
-        $result = $this->db->query($query);
-        if (!$result) {
-            die('Query failed: ' . $this->db->error);
-        }
-        return $result;
+        return $this->db->query($query);
     }
 
     public function fetchArray($result) {
